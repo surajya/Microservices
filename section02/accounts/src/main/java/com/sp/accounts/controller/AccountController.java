@@ -4,21 +4,24 @@ import com.sp.accounts.constants.AccountConstant;
 import com.sp.accounts.dto.CustomerDto;
 import com.sp.accounts.dto.ResponseDto;
 import com.sp.accounts.services.IAccountServices;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Validated
 public class AccountController {
 
     private final IAccountServices accountServices;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> CreateAccount(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<ResponseDto> CreateAccount(@Valid @RequestBody CustomerDto customerDto) {
         accountServices.createAccount(customerDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDto(AccountConstant.STATUS_201, AccountConstant.MESSAGE_201));
@@ -31,7 +34,7 @@ public class AccountController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseDto> updateAccount(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<ResponseDto> updateAccount(@Valid @RequestBody CustomerDto customerDto) {
         boolean updated = accountServices.updateAccount(customerDto);
         if (updated) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(AccountConstant.STATUS_200, AccountConstant.MESSAGE_200));

@@ -102,7 +102,7 @@ public class AccountServices implements IAccountServices {
 
 
     private Account createAccountFromCustomerID(Customer savedCustomer) {
-        Long randomNumer = ThreadLocalRandom.current().nextLong(1000000, 10000000);
+        Long randomNumer = ThreadLocalRandom.current().nextLong(1000000000, 1990000060);
         Account account = Account.builder()
                 .accountNumber(randomNumer)
                 .customerId(savedCustomer.getId())
