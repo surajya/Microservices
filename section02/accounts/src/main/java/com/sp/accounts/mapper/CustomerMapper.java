@@ -1,5 +1,6 @@
 package com.sp.accounts.mapper;
 
+import com.sp.accounts.dto.AccountDto;
 import com.sp.accounts.dto.CustomerDto;
 import com.sp.accounts.entity.Customer;
 
@@ -7,11 +8,12 @@ import java.time.LocalDateTime;
 
 public class CustomerMapper {
 
-    public static CustomerDto mapToCustomerDto(Customer customer) {
+    public static CustomerDto mapToCustomerDto(Customer customer, AccountDto accountDto) {
         return new CustomerDto(
                 customer.getName(),
                 customer.getEmail(),
-                customer.getMobileNumber()
+                customer.getMobileNumber(),
+                accountDto
         );
     }
 
