@@ -17,7 +17,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -63,8 +62,6 @@ public class AccountServices implements IAccountServices {
             );
 
             BeanUtils.copyProperties(accountDto, account);
-            account.setUpdatedAt(LocalDateTime.now());
-            account.setUpdatedBy("Ramu Das Yadav");
             accountRepository.save(account);
 
             Customer customer = customerRepository.findById(account.getCustomerId()).orElseThrow(() ->
@@ -72,8 +69,6 @@ public class AccountServices implements IAccountServices {
             );
 
             BeanUtils.copyProperties(customerDto, customer);
-            customer.setUpdatedAt(LocalDateTime.now());
-            customer.setUpdatedBy("Ramu Das Yadav");
             customerRepository.save(customer);
             isUpdated = true;
         }
@@ -108,8 +103,6 @@ public class AccountServices implements IAccountServices {
                 .customerId(savedCustomer.getId())
                 .accountType(AccountConstant.SAVINGS)
                 .branchAddress(AccountConstant.ADDRESS)
-                .createdBy(savedCustomer.getCreatedBy())
-                .createdAt(LocalDateTime.now())
                 .build();
         return account;
     }
