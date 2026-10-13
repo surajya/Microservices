@@ -1,6 +1,6 @@
 package com.sp.accounts.exception;
 
-import com.sp.accounts.dto.ErrorResponse;
+import com.sp.accounts.dto.ErrorResponseDto;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,8 +34,8 @@ public class GlobaleExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobaleException(Exception ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
+    public ResponseEntity<ErrorResponseDto> handleGlobaleException(Exception ex, WebRequest request) {
+        ErrorResponseDto errorResponse = new ErrorResponseDto(
                 request.getDescription(false),
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 ex.getMessage(),
@@ -46,8 +46,8 @@ public class GlobaleExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(CustomerAlreadyExistException.class)
-    public ResponseEntity<ErrorResponse> handleCustomerAlreadyExist(CustomerAlreadyExistException customerAlreadyExistException, WebRequest webRequest) {
-        ErrorResponse errorResponse = new ErrorResponse(
+    public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExist(CustomerAlreadyExistException customerAlreadyExistException, WebRequest webRequest) {
+        ErrorResponseDto errorResponse = new ErrorResponseDto(
                 webRequest.getDescription(false),
                 HttpStatus.BAD_REQUEST,
                 customerAlreadyExistException.getMessage(),
@@ -57,8 +57,8 @@ public class GlobaleExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleCustomerNotFound(ResourceNotFoundException resourceNotFoundException, WebRequest webRequest) {
-        ErrorResponse errorResponse = new ErrorResponse(
+    public ResponseEntity<ErrorResponseDto> handleCustomerNotFound(ResourceNotFoundException resourceNotFoundException, WebRequest webRequest) {
+        ErrorResponseDto errorResponse = new ErrorResponseDto(
                 webRequest.getDescription(false),
                 HttpStatus.NOT_FOUND,
                 resourceNotFoundException.getMessage(),
