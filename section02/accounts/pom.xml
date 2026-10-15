@@ -11,8 +11,9 @@
     <groupId>com.sp</groupId>
     <artifactId>accounts</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name/>
-    <description/>
+    <packaging>jar</packaging>
+    <name>accounts</name>
+    <description>Microservice for Accounts</description>
     <url/>
     <licenses>
         <license/>
