@@ -1,6 +1,8 @@
 server:
   port: 8090
 spring:
+  profiles:
+    active: prod
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
@@ -14,3 +16,18 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+build:
+  version: 3.0
+
+
+loans:
+  message:
+    welcome: Welcome to the loans Service from dev team
+    error: An error occurred while processing your request.
+  contactDetails:
+    email: "devsupport@accounts.com"
+    name: "loans dev Support Team"
+  onCallSupport:
+    phone: "+1-800-123-4567"
+    hours: "24/7"

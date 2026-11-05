@@ -2,9 +2,7 @@ package com.sp.cards.controller;
 
 
 import com.sp.cards.constants.CardsConstants;
-import com.sp.cards.dto.CardsDto;
-import com.sp.cards.dto.ErrorResponseDto;
-import com.sp.cards.dto.ResponseDto;
+import com.sp.cards.dto.*;
 import com.sp.cards.service.ICardsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +13,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,11 +32,19 @@ import org.springframework.web.bind.annotation.*;
 )
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Validated
 public class CardsController {
 
-    private ICardsService iCardsService;
+    private final ICardsService iCardsService;
+
+    private final Environment environment;
+
+    private final CardContactInfoDTO cardContactInfoDTO;
+
+    @Value("${build.version}")
+    private String buildInfo;
+
 
     @Operation(
             summary = "Create Card REST API",
@@ -160,6 +169,64 @@ public class CardsController {
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(CardsConstants.STATUS_417, CardsConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @Operation(
+            summary = "Build version",
+            description = "get the Build version"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "get the Build version succesfully"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error"
+            )
+    })
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildVersion() {
+        return ResponseEntity.status(HttpStatus.OK).body(buildInfo);
+    }
+
+    @Operation(
+            summary = "Java version",
+            description = "get the Java version"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "get the Java version succesfully"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error"
+            )
+    })
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        String javaVersion = environment.getProperty("JAVA_HOME");
+        return ResponseEntity.status(HttpStatus.OK).body(javaVersion);
+    }
+
+    @Operation(
+            summary = "AccountDetails",
+            description = "get the AccountDetails"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "get the AccountDetails succesfully"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error"
+            )
+    })
+    @GetMapping("/contact-info")
+    public ResponseEntity<CardContactInfoDTO> getAccountDetails() {
+        return ResponseEntity.status(HttpStatus.OK).body(cardContactInfoDTO);
     }
 
 }

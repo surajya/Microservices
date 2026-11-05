@@ -2,6 +2,7 @@ package com.sp.loans.controller;
 
 import com.sp.loans.constants.LoansConstants;
 import com.sp.loans.dto.ErrorResponseDto;
+import com.sp.loans.dto.LoanContactInfoDTO;
 import com.sp.loans.dto.LoansDto;
 import com.sp.loans.dto.ResponseDto;
 import com.sp.loans.service.ILoansService;
@@ -14,6 +15,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +34,18 @@ import org.springframework.web.bind.annotation.*;
 )
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Validated
 public class LoansController {
 
-    private ILoansService iLoansService;
+    private final ILoansService iLoansService;
+
+    private final Environment environment;
+
+    private final LoanContactInfoDTO loanContactInfoDTO;
+
+    @Value("${build.version}")
+    private String buildInfo;
 
     @Operation(
             summary = "Create Loan REST API",
@@ -162,6 +173,64 @@ public class LoansController {
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @Operation(
+            summary = "Build version",
+            description = "get the Build version"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "get the Build version succesfully"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error"
+            )
+    })
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildVersion() {
+        return ResponseEntity.status(HttpStatus.OK).body(buildInfo);
+    }
+
+    @Operation(
+            summary = "Java version",
+            description = "get the Java version"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "get the Java version succesfully"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error"
+            )
+    })
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        String javaVersion = environment.getProperty("JAVA_HOME");
+        return ResponseEntity.status(HttpStatus.OK).body(javaVersion);
+    }
+
+    @Operation(
+            summary = "AccountDetails",
+            description = "get the AccountDetails"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "get the AccountDetails succesfully"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error"
+            )
+    })
+    @GetMapping("/contact-info")
+    public ResponseEntity<LoanContactInfoDTO> getAccountDetails() {
+        return ResponseEntity.status(HttpStatus.OK).body(loanContactInfoDTO);
     }
 
 }

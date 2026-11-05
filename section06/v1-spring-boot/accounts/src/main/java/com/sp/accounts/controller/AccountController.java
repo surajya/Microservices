@@ -1,6 +1,7 @@
 package com.sp.accounts.controller;
 
 import com.sp.accounts.constants.AccountConstant;
+import com.sp.accounts.dto.AccountContactInfoDTO;
 import com.sp.accounts.dto.CustomerDto;
 import com.sp.accounts.dto.ErrorResponseDto;
 import com.sp.accounts.dto.ResponseDto;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,10 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
 
     private final IAccountServices accountServices;
+
+    private final Environment environment;
+
+    private final AccountContactInfoDTO accountContactInfoDTO;
 
     @Value("${build.version}")
     private String buildInfo;
@@ -144,5 +150,44 @@ public class AccountController {
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildVersion() {
             return ResponseEntity.status(HttpStatus.OK).body(buildInfo);
+    }
+
+    @Operation(
+            summary = "Java version",
+            description = "get the Java version"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "get the Java version succesfully"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error"
+            )
+    })
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        String javaVersion = environment.getProperty("JAVA_HOME");
+        return ResponseEntity.status(HttpStatus.OK).body(javaVersion);
+    }
+
+    @Operation(
+            summary = "AccountDetails",
+            description = "get the AccountDetails"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "get the AccountDetails succesfully"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error"
+            )
+    })
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountContactInfoDTO> getAccountDetails() {
+        return ResponseEntity.status(HttpStatus.OK).body(accountContactInfoDTO);
     }
 }
