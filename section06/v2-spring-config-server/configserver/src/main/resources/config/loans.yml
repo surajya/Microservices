@@ -1,0 +1,14 @@
+build:
+  version: 3.0
+
+
+loans:
+  message:
+    welcome: Welcome to the loans Service from dev team
+    error: An error occurred while processing your request.
+  contactDetails:
+    email: "devsupport@loans.com"
+    name: "loans dev Support Team"
+  onCallSupport:
+    phone: "+1-800-123-4567"
+    hours: "24/7"

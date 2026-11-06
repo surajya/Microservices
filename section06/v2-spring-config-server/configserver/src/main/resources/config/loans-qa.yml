@@ -1,0 +1,14 @@
+build:
+  version: 2.0
+
+
+loans:
+  message:
+    welcome: Welcome to the Loans Service from QA team
+    error: An error occurred while processing your request.
+  contactDetails:
+    email: "qasupport@loans.com"
+    name: "Loans QA Support Team"
+  onCallSupport:
+    phone: "+1-800-123-4569"
+    hours: "24/7"
