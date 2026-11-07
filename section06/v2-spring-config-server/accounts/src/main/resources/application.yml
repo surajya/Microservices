@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: qa
+    active: prod
   application:
     name: accounts
   datasource:
@@ -17,4 +17,4 @@ spring:
     console:
       enabled: true
   config:
-    import: "optional:configserver:http://localhost:8071/"
+    import: "configserver:http://localhost:8071/"

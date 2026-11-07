@@ -9,6 +9,7 @@ spring:
     config:
       server:
         native:
-          search-locations: classpath:/config
+          #search-locations: classpath://config
+          search-locations: "file:///D://JAVA//UDemy//Microservices//microservices//section06//v2-spring-config-server//configserver//src//main//resources//config"
 
 
