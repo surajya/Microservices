@@ -1,0 +1,21 @@
+server:
+    port: 8071
+spring:
+  application:
+    name: configserver
+  profiles:
+    #active: native
+    active: git
+  cloud:
+    config:
+      server:
+        #native:
+          #search-locations: classpath://config
+          #search-locations: "file:///D://JAVA//UDemy//Microservices//microservices//section06//v2-spring-config-server//configserver//src//main//resources//config"
+        git:
+          uri: "https://github.com/surajya/Microservice-Config.git"
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+
