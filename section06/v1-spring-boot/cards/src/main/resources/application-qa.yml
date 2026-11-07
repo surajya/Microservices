@@ -1,0 +1,14 @@
+build:
+  version: 2.0
+
+
+cards:
+  message:
+    welcome: Welcome to the Cards Service from QA team
+    error: An error occurred while processing your request.
+  contactDetails:
+    email: "qasupport@cards.com"
+    name: "Cards QA Support Team"
+  onCallSupport:
+    phone: "+1-800-123-4569"
+    hours: "24/7"
