@@ -10,7 +10,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class CardContactInfoDTO {
-    private  Map<String, String> message;
+    private Map<String, String> message;
     private Map<String, String> contactDetails;
     private Map<String, String> onCallSupport;
 }
