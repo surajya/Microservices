@@ -1,6 +1,48 @@
+name: spy-microservices
 services:
+  rabbit:
+    image: rabbitmq:4-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    deploy:
+        resources:
+            limits:
+              memory: 700m
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    networks:
+      - spybank
+  configserver:
+    image: "suraj338/configserver:s6"
+    container_name: configserver-ms
+    ports:
+      - "8071:8071"
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    environment:
+      SPRING_RABBITMQ_HOST: "rabbit"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8071 && printf 'GET /actuator/health/readiness HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3 && grep -q '\"status\":\"UP\"' <&3"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    networks:
+      - spybank
+
   accounts:
-    image: "suraj338/accounts:s4"
+    image: "suraj338/accounts:s6"
     container_name: accounts-ms
     restart: unless-stopped
     ports:
@@ -9,11 +51,18 @@ services:
       resources:
         limits:
           memory: 700m
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_RABBITMQ_HOST: "rabbit"
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
     networks:
       - spybank
 
   cards:
-    image: "suraj338/cards:s4"
+    image: "suraj338/cards:s6"
     container_name: cards-ms
     restart: unless-stopped
     ports:
@@ -22,11 +71,18 @@ services:
       resources:
         limits:
           memory: 700m
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_RABBITMQ_HOST: "rabbit"
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
     networks:
       - spybank
 
   loans:
-    image: "suraj338/loans:s4"
+    image: "suraj338/loans:s6"
     container_name: loans-ms
     restart: unless-stopped
     ports:
@@ -35,9 +91,21 @@ services:
       resources:
         limits:
           memory: 700m
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_RABBITMQ_HOST: "rabbit"
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
     networks:
       - spybank
 
 networks:
   spybank:
     driver: bridge
+
+
+#Note: mvn compile jib:build -Dimage=suraj338/configserver:s6  use this command to build the docker image for configserver and push it to docker hub.
+#Note: docker pull suraj338/configserver:s6 use this command to pull the image from docker hub and run it in docker-compose.
+#Note: mvn compile jib:dockerBuild -Dimage=suraj338/configserver:s6 use this command to build the docker image for configserver and run it in docker-compose without pushing it to docker hub.
