@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import java.util.TimeZone;
+
 @SpringBootApplication
 /*@ComponentScans({ @ComponentScan("com.eazybytes.accounts.controller") })
 @EnableJpaRepositories("com.eazybytes.accounts.repository")
@@ -40,7 +42,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class AccountsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AccountsApplication.class, args);
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
+        SpringApplication.run(AccountsApplication.class, args);
 	}
 
 }

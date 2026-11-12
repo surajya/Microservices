@@ -11,10 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import java.util.TimeZone;
+
 @SpringBootApplication
-/*@ComponentScans({ @ComponentScan("com.eazybytes.cards.controller") })
-@EnableJpaRepositories("com.eazybytes.cards.repository")
-@EntityScan("com.eazybytes.cards.model")*/
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
 @EnableConfigurationProperties(value = {CardsContactInfoDto.class})
 @OpenAPIDefinition(
@@ -40,6 +39,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class CardsApplication {
 
 	public static void main(String[] args) {
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
 		SpringApplication.run(CardsApplication.class, args);
 	}
 }
