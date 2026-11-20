@@ -1,6 +1,8 @@
 package com.sp.accounts;
 
 import com.sp.accounts.dto.AccountContactInfoDTO;
+import com.sp.accounts.services.clients.CardsClient;
+import com.sp.accounts.services.clients.LoansClient;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -10,10 +12,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.web.service.registry.ImportHttpServices;
 
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "AuditAwareImpl")
 @EnableConfigurationProperties(value = {AccountContactInfoDTO.class})
+@ImportHttpServices(group = "loans-group", types = LoansClient.class)
+@ImportHttpServices(group = "cards-group", types = CardsClient.class)
 @OpenAPIDefinition(
         info = @Info(
                 title = "Account microservice Rest API Document",

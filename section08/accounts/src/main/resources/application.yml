@@ -20,6 +20,13 @@ spring:
       enabled: true
   config:
     import: "optional:configserver:http://localhost:8071/"
+  http:
+    serviceClient:
+      loans-group:
+        base-url: lb://loans
+      cards-group:
+        base-url: lb://cards
+
 management:
   endpoints:
     web:

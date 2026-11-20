@@ -1,6 +1,7 @@
 package com.sp.accounts.mapper;
 
 import com.sp.accounts.dto.AccountDto;
+import com.sp.accounts.dto.CustomerDetailsDto;
 import com.sp.accounts.dto.CustomerDto;
 import com.sp.accounts.entity.Customer;
 
@@ -25,5 +26,12 @@ public class CustomerMapper {
                 .createdBy("Sohan Sharma")
                 .createdAt(LocalDateTime.now())
                 .build();
+    }
+
+    public static CustomerDetailsDto mapToCustomerDetailsDto(Customer customer, CustomerDetailsDto customerDetailsDto) {
+        customerDetailsDto.setName(customer.getName());
+        customerDetailsDto.setEmail(customer.getEmail());
+        customerDetailsDto.setMobileNumber(customer.getMobileNumber());
+        return customerDetailsDto;
     }
 }
