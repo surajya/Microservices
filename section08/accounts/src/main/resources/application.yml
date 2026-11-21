@@ -57,3 +57,7 @@ info:
 logging:
   pattern:
     console: ${CONSOLE_LOG_PATTERN:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %cyan(%msg%n)}
+
+##Docker command  special
+# create docker image local: mvn compile jib:dockerBuild -Dimage=suraj338/loans:s8
+# upload docker image to docker hub : docker push suraj338/eurekaserver:s8

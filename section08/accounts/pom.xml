@@ -169,7 +169,7 @@
                 <version>3.5.2</version>
                 <configuration>
                     <to>
-                        <image>suraj338/${project.artifactId}:s6</image>
+                        <image>suraj338/${project.artifactId}:s8</image>
                     </to>
                 </configuration>
             </plugin>
