@@ -1,0 +1,48 @@
+server:
+    port: 8071
+spring:
+  application:
+    name: configserver
+  profiles:
+    #active: native
+    active: git
+  cloud:
+    config:
+      server:
+        #native:
+          #search-locations: classpath://config
+          #search-locations: "file:///D://JAVA//UDemy//Microservices//microservices//section06//v2-spring-config-server//configserver//src//main//resources//config"
+        git:
+          uri: "https://github.com/surajya/Microservice-Config.git"
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+        monitor:
+          validation-filter-enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+encrypt:
+  key: "fdjf743dkfd342dfdf567jkj5554n3434"
+logging:
+  pattern:
+    console: ${CONSOLE_LOG_PATTERN:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %cyan(%msg%n)}
+
+  
+  #1. Hookdeck CLI (hookdeck listen 8071 github-config --path /monitor) tunnels the public URL https://console.hookdeck.com/e/batbvnhlj96an1 to localhost, and the GitHub webhook uses it with application/json, push event only, and SSL verification enabled.
+  #2. A push to the config repo triggers /monitor, which publishes a bus refresh so your services pick up new values without a restart.
+
